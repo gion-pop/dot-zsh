@@ -1,0 +1,29 @@
+## history
+HISTFILE=~/.zsh_history
+HISTSIZE=10000000
+SAVEHIST=10000000
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_save_nodups
+setopt share_history
+
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^p" history-beginning-search-backward-end
+bindkey "^n" history-beginning-search-forward-end
+
+## completion
+autoload -Uz compinit; compinit
+autoload -Uz predict-on; predict-on
+setopt list_packed
+setopt noautoremoveslash
+setopt complete_aliases
+
+# ignore case in completion
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+# cache the completions
+zstyle ':completion::complete:*' use-cache 1
+
+## platform-specific
+[ -f $ZDOTDIR/.zshrc_`uname` ] && . $ZDOTDIR/.zshrc_`uname`
