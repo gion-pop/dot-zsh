@@ -1,3 +1,17 @@
+## antigen
+# Load the oh-my-zsh's library.
+#antigen use oh-my-zsh
+
+# Bundles from the default app.
+antigen-bundles <<EOBUNDLES
+zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-completions
+b4b4r07/enhancd
+EOBUNDLES
+
+# Tell antigen that you're done.
+antigen-apply
+
 ## history
 HISTFILE=~/.zsh_history
 HISTSIZE=10000000
@@ -24,6 +38,9 @@ setopt complete_aliases
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # cache the completions
 zstyle ':completion::complete:*' use-cache 1
+
+## enhancd filter
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ## platform-specific
 [ -f $ZDOTDIR/.zshrc_`uname` ] && . $ZDOTDIR/.zshrc_`uname`
