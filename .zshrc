@@ -37,10 +37,20 @@ setopt complete_aliases
 # ignore case in completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # cache the completions
-zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion:*' use-cache yes
+zstyle ':completion:*' cache-path ~/.cache/zsh
+
+## misc
+setopt correctall
+setopt magic_equal_subst
+setopt prompt_subst
+setopt notify
+setopt extended_glob
+REPORTTIME=3
 
 ## enhancd filter
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-## platform-specific
+## site-specific
 [ -f $ZDOTDIR/.zshrc_`uname` ] && . $ZDOTDIR/.zshrc_`uname`
+[ -f $ZDOTDIR/.zshrc_local ] && . $ZDOTDIR/.zshrc_local
