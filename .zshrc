@@ -46,6 +46,7 @@ setopt magic_equal_subst
 setopt prompt_subst
 setopt notify
 setopt extended_glob
+setopt ignoreeof
 REPORTTIME=3
 
 ## enhancd filter
