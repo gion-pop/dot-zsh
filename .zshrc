@@ -1,16 +1,9 @@
-## antigen
-# Load the oh-my-zsh's library.
-#antigen use oh-my-zsh
+### zplug
+zplug "zsh-users/zsh-syntax-highlighting"
+zplug "zsh-users/zsh-completions"
+zplug "b4b4r07/enhancd", use:init.sh
 
-# Bundles from the default app.
-antigen-bundles <<EOBUNDLES
-zsh-users/zsh-syntax-highlighting
-zsh-users/zsh-completions
-b4b4r07/enhancd
-EOBUNDLES
 
-# Tell antigen that you're done.
-antigen-apply
 
 ## history
 HISTFILE=~/.zsh_history
