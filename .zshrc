@@ -46,6 +46,7 @@ zstyle ':completion:*' use-cache yes
 zstyle ':completion:*' cache-path ~/.cache/zsh
 
 ## misc
+autoload -Uz colors; colors
 setopt correctall
 setopt magic_equal_subst
 setopt prompt_subst
@@ -54,6 +55,11 @@ setopt extended_glob
 setopt ignoreeof
 REPORTTIME=3
 
+## PROMPT
+PROMPT_ADDITION=''
+PROMPT='${SSH_PROMPT}[%{$fg_bold[yellow]%}%D{%D %r}%{$reset_color%}] %F{cyan}%B%~%b%f
+%(?.%F{green}.%F{red})%?%f${PROMPT_ADDITION} %#%f%b '
+RPROMPT='[%F{green}%n%f@%m]'
 
 ## site-specific
 [ -f $ZDOTDIR/.zshrc_`uname` ] && . $ZDOTDIR/.zshrc_`uname`
