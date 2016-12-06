@@ -1,4 +1,5 @@
 # site-specific
+[ -f $ZDOTDIR/.zprofile_`uname` ] && . $ZDOTDIR/.zprofile_`uname`
 [ -f $ZDOTDIR/.zprofile_local ] && . $ZDOTDIR/.zprofile_local
 
 [ ! -d ~/.zplug ] && curl -sL zplug.sh/installer | zsh
