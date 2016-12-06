@@ -1,9 +1,5 @@
-# site-specific
-[ -f $ZDOTDIR/.zprofile_`uname` ] && . $ZDOTDIR/.zprofile_`uname`
-[ -f $ZDOTDIR/.zprofile_local ] && . $ZDOTDIR/.zprofile_local
-
+## zplug
 [ ! -d ~/.zplug ] && curl -sL zplug.sh/installer | zsh
-
 . ~/.zplug/init.zsh
 
 # https://github.com/riywo/anyenv
@@ -28,3 +24,7 @@ else
     ssh-add
   fi
 fi
+
+# site-specific
+[ -f $ZDOTDIR/.zprofile_`uname` ] && . $ZDOTDIR/.zprofile_`uname`
+[ -f $ZDOTDIR/.zprofile_local ] && . $ZDOTDIR/.zprofile_local
