@@ -3,6 +3,18 @@ zplug "zsh-users/zsh-syntax-highlighting"
 zplug "zsh-users/zsh-completions"
 zplug "b4b4r07/enhancd", use:init.sh
 
+## fzf
+zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
+zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
+
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+zplug load --verbose
 
 
 ## history
@@ -42,8 +54,6 @@ setopt extended_glob
 setopt ignoreeof
 REPORTTIME=3
 
-## enhancd filter
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ## site-specific
 [ -f $ZDOTDIR/.zshrc_`uname` ] && . $ZDOTDIR/.zshrc_`uname`
