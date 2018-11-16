@@ -98,6 +98,46 @@ PROMPT='${SSH_PROMPT}[%{$fg_bold[yellow]%}%D{%D %r}%{$reset_color%}] %F{cyan}%B%
 RPROMPT='[`__update_vcs_info_msg`%F{green}%n%f@%m]'
 
 
+## kubernetes
+
+alias ku=kubectl
+
+# completion for kubernetes
+# original: https://github.com/petitviolet/dotfiles/blob/f7fde53ebea10ec9b7b4d19d167490396a89876a/_zshrc.alias
+
+function __kubernetes_pod() {
+  local SELECTED=$(kubectl get pod -a | fzf | awk '{print $1}')
+  LBUFFER+=$SELECTED
+}
+zle -N __kubernetes_pod
+bindkey "^x^kp" __kubernetes_pod
+
+function __kubernetes_namespace() {
+  local SELECTED=$(kubectl get namespace | awk '{print $1}' | fzf | tr -d '\n')
+  LBUFFER+=$SELECTED
+}
+zle -N __kubernetes_namespace
+bindkey "^x^kn" __kubernetes_namespace
+
+function __kubernetes_use_context()
+{
+  local SELECTED=$(kubectl config get-contexts | awk '{print $2}' | fzf | tr -d '\n')
+  LBUFFER="kubectl config use-context ${SELECTED}"
+  zle accept-line
+}
+zle -N __kubernetes_use_context
+bindkey "^x^k^uc" __kubernetes_use_context
+
+function __kubernetes_use_ns()
+{
+  local SELECTED=$(kubectl get namespace | awk '{print $1}' | fzf | tr -d '\n')
+  LBUFFER="kubectl config set-context $(kubectl config current-context) --namespace=${SELECTED}"
+  zle accept-line
+}
+zle -N __kubernetes_use_ns
+bindkey "^x^k^un" __kubernetes_use_ns
+
+
 ## site-specific
 [ -f $ZDOTDIR/.zshrc_`uname` ] && . $ZDOTDIR/.zshrc_`uname`
 [ -f $ZDOTDIR/.zshrc_local ] && . $ZDOTDIR/.zshrc_local || return 0
