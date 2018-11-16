@@ -1,3 +1,4 @@
-.zsh_history
+history
 .zcompdump
 .*_local
+.*.zwc
