@@ -1,4 +1,7 @@
 ### zplug
+[ ! -d ~/.zplug ] && curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+. ~/.zplug/init.zsh
+
 zplug "zsh-users/zsh-syntax-highlighting"
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
@@ -97,7 +100,6 @@ PROMPT='${SSH_PROMPT}[%{$fg_bold[yellow]%}%D{%D %r}%{$reset_color%}] %F{cyan}%B%
 %(?.%F{green}.%F{red})%?%f${PROMPT_ADDITION} %#%f%b '
 RPROMPT='[`__update_vcs_info_msg`%F{green}%n%f@%m]'
 
-
 ## kubernetes
 
 alias ku=kubectl
@@ -136,7 +138,6 @@ function __kubernetes_use_ns()
 }
 zle -N __kubernetes_use_ns
 bindkey "^x^k^un" __kubernetes_use_ns
-
 
 ## site-specific
 [ -f $ZDOTDIR/.zshrc_`uname` ] && . $ZDOTDIR/.zshrc_`uname`

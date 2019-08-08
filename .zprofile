@@ -1,7 +1,3 @@
-## zplug
-[ ! -d ~/.zplug ] && curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-. ~/.zplug/init.zsh
-
 # https://github.com/riywo/anyenv
 if [ -d ${HOME}/.anyenv ]; then
   export PATH="$HOME/.anyenv/bin:$PATH"
