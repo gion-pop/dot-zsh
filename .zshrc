@@ -48,13 +48,19 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' use-cache yes
 zstyle ':completion:*' cache-path ~/.cache/zsh
 
-## misc
+setopt auto_pushd
+setopt pushd_ignore_dups
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+## Misc
 setopt correctall
 setopt magic_equal_subst
 setopt prompt_subst
 setopt notify
 setopt extended_glob
 setopt ignoreeof
+setopt hist_ignore_dups
+setopt hist_ignore_space
 REPORTTIME=3
 
 ### PROMPT
