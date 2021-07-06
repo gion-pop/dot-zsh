@@ -1,9 +1,3 @@
-# https://github.com/riywo/anyenv
-if [ -d ${HOME}/.anyenv ]; then
-  export PATH="$HOME/.anyenv/bin:$PATH"
-  eval "$(anyenv init -)"
-fi
-
 # http://blog.manaten.net/entry/ssh-agent-forward
 AGENT_SOCK_FILE="/tmp/ssh-agent-$USER"
 SSH_AGENT_FILE="$HOME/.ssh-agent-info"
@@ -24,3 +18,11 @@ fi
 # site-specific
 [ -f $ZDOTDIR/.zprofile_`uname` ] && . $ZDOTDIR/.zprofile_`uname`
 [ -f $ZDOTDIR/.zprofile_local ] && . $ZDOTDIR/.zprofile_local
+
+# https://github.com/anyenv/anyenv
+if [ -d ${HOME}/.anyenv ]; then
+  export PATH="$HOME/.anyenv/bin:$PATH"
+  eval "$(${HOME}/.anyenv/bin/anyenv init -)"
+fi
+
+eval "$(direnv hook zsh)"
