@@ -1,0 +1,5 @@
+if type gcloud > /dev/null && type brew > /dev/null; then
+  source $(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+fi
+
+complete -o nospace -C $(brew --prefix)/bin/terraform terraform

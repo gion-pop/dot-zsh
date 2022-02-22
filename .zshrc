@@ -37,6 +37,9 @@ bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
 ## completion
+if type brew &>/dev/null; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:$(brew --prefix)/share/zsh-completions:$FPATH"
+fi
 autoload -Uz compinit; compinit
 setopt list_packed
 setopt noautoremoveslash

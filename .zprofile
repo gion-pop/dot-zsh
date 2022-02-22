@@ -20,9 +20,10 @@ fi
 [ -f $ZDOTDIR/.zprofile_local ] && . $ZDOTDIR/.zprofile_local
 
 # https://github.com/anyenv/anyenv
-if [ -d ${HOME}/.anyenv ]; then
-  export PATH="$HOME/.anyenv/bin:$PATH"
-  eval "$(${HOME}/.anyenv/bin/anyenv init -)"
+if type anyenv > /dev/null; then
+  eval "$(anyenv init -)"
 fi
 
-eval "$(direnv hook zsh)"
+if type direnv > /dev/null; then
+  eval "$(direnv hook zsh)"
+fi
