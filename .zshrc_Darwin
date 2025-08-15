@@ -1,5 +1,43 @@
 if type gcloud > /dev/null && type brew > /dev/null; then
-  source $(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+  source ${BREW_PREFIX}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 fi
 
-complete -o nospace -C $(brew --prefix)/bin/terraform terraform
+# complete -o nospace -C ${BREW_PREFIX}/bin/terraform terraform
+
+export PATH="/Users/onuma/Library/Application Support/JetBrains/Toolbox/scripts:$PATH"
+
+function _claude() {
+  allow_git=
+  if git rev-parse --git-common-dir > /dev/null 2>&1; then
+    allow_git=-allow-git
+  fi
+
+  cage \
+  ${allow_git} \
+  -allow-keychain \
+  -allow . \
+  -allow ${HOME}/.claude \
+  -allow ${HOME}/.claude.json \
+  -allow ${HOME}/.claude.json.lock \
+  -allow ${HOME}/.claude.json.backup \
+  -allow /tmp \
+  -allow /private/tmp \
+  -allow ${TMPDIR} \
+  -allow ${HOME}/.cache \
+  -allow ${HOME}/.npm \
+  -allow ${HOME}/.config/gcloud \
+  -allow ${HOME}/Library/Caches/go-build \
+  -- claude $@
+}
+alias claude='_claude'
+
+## zim
+ZIM_HOME=~/.zim
+
+# Install missing modules and update ${ZIM_HOME}/init.zsh if missing or outdated.
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} ]]; then
+  source /opt/homebrew/opt/zimfw/share/zimfw.zsh init
+fi
+
+# Initialize modules.
+source ${ZIM_HOME}/init.zsh

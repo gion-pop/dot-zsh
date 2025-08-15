@@ -1,25 +1,11 @@
-### zplug
-[ ! -d ~/.zplug ] && curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-. ~/.zplug/init.zsh
-
-zplug "zsh-users/zsh-syntax-highlighting"
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "b4b4r07/enhancd", use:init.sh
-
-## fzf
-zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
-zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
-
-if ! zplug check --verbose; then
-  printf "Install? [y/N]: "
-  if read -q; then
-    echo; zplug install
-  fi
+if type mise > /dev/null; then
+  eval "$(mise activate zsh)"
+  eval "$(mise activate --shims)"
 fi
 
-zplug load --verbose
-
+if type direnv > /dev/null; then
+  eval "$(direnv hook zsh)"
+fi
 
 ## history
 HISTFILE=~/.zsh/history
@@ -37,19 +23,26 @@ bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
 ## completion
-if type brew &>/dev/null; then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:$(brew --prefix)/share/zsh-completions:$FPATH"
-fi
-autoload -Uz compinit; compinit
-setopt list_packed
-setopt noautoremoveslash
-setopt complete_aliases
-
 # ignore case in completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # cache the completions
 zstyle ':completion:*' use-cache yes
 zstyle ':completion:*' cache-path ~/.cache/zsh
+
+if type brew &>/dev/null; then
+  FPATH="${BREW_PREFIX}/share/zsh/site-functions $FPATH"
+fi
+
+autoload -Uz compinit
+if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]; then
+    compinit
+else
+    compinit -C
+fi
+
+setopt list_packed
+setopt noautoremoveslash
+setopt complete_aliases
 
 setopt auto_pushd
 setopt pushd_ignore_dups
@@ -65,6 +58,7 @@ setopt ignoreeof
 setopt hist_ignore_dups
 setopt hist_ignore_space
 REPORTTIME=3
+autoload -Uz colors && colors
 
 ### PROMPT
 ## SSH?
@@ -109,45 +103,16 @@ PROMPT='${SSH_PROMPT}[%{$fg_bold[yellow]%}%D{%D %r}%{$reset_color%}] %F{cyan}%B%
 %(?.%F{green}.%F{red})%?%f${PROMPT_ADDITION} %#%f%b '
 RPROMPT='[`__update_vcs_info_msg`%F{green}%n%f@%m]'
 
-## kubernetes
+if command -v ngrok &>/dev/null; then
+  eval "$(ngrok completion)"
+fi
 
-alias ku=kubectl
-
-# completion for kubernetes
-# original: https://github.com/petitviolet/dotfiles/blob/f7fde53ebea10ec9b7b4d19d167490396a89876a/_zshrc.alias
-
-function __kubernetes_pod() {
-  local SELECTED=$(kubectl get pod -a | fzf | awk '{print $1}')
-  LBUFFER+=$SELECTED
-}
-zle -N __kubernetes_pod
-bindkey "^x^kp" __kubernetes_pod
-
-function __kubernetes_namespace() {
-  local SELECTED=$(kubectl get namespace | awk '{print $1}' | fzf | tr -d '\n')
-  LBUFFER+=$SELECTED
-}
-zle -N __kubernetes_namespace
-bindkey "^x^kn" __kubernetes_namespace
-
-function __kubernetes_use_context()
-{
-  local SELECTED=$(kubectl config get-contexts | awk '{print $2}' | fzf | tr -d '\n')
-  LBUFFER="kubectl config use-context ${SELECTED}"
-  zle accept-line
-}
-zle -N __kubernetes_use_context
-bindkey "^x^k^uc" __kubernetes_use_context
-
-function __kubernetes_use_ns()
-{
-  local SELECTED=$(kubectl get namespace | awk '{print $1}' | fzf | tr -d '\n')
-  LBUFFER="kubectl config set-context $(kubectl config current-context) --namespace=${SELECTED}"
-  zle accept-line
-}
-zle -N __kubernetes_use_ns
-bindkey "^x^k^un" __kubernetes_use_ns
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 
 ## site-specific
 [ -f $ZDOTDIR/.zshrc_`uname` ] && . $ZDOTDIR/.zshrc_`uname`
-[ -f $ZDOTDIR/.zshrc_local ] && . $ZDOTDIR/.zshrc_local || return 0
+[ -f $ZDOTDIR/.zshrc_local ] && . $ZDOTDIR/.zshrc_local
+
+if (which zprof > /dev/null 2>&1) ;then
+  zprof
+fi

@@ -19,11 +19,12 @@ fi
 [ -f $ZDOTDIR/.zprofile_`uname` ] && . $ZDOTDIR/.zprofile_`uname`
 [ -f $ZDOTDIR/.zprofile_local ] && . $ZDOTDIR/.zprofile_local
 
-# https://github.com/anyenv/anyenv
-if type anyenv > /dev/null; then
-  eval "$(anyenv init -)"
+if type mise > /dev/null; then
+  eval "$(mise activate --shims)"
 fi
 
 if type direnv > /dev/null; then
   eval "$(direnv hook zsh)"
 fi
+
+PATH=~/.local/bin:$PATH:./node_modules/bin
